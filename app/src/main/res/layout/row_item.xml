@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="model"
+            type="com.andy_dev.arpractical.model.Facts" />
+    </data>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_content"
         android:layout_width="match_parent"
@@ -30,6 +37,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="2"
+                android:text="@{model.title}"
                 android:textColor="@color/colorPrimary"
                 app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintTop_toTopOf="parent"
@@ -41,6 +49,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_4sdp"
+                android:text="@{model.description}"
                 android:textColor="@color/fields_color"
                 app:layout_constraintEnd_toStartOf="@+id/rl_img_item"
                 app:layout_constraintStart_toStartOf="parent"
