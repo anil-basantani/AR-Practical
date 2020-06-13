@@ -51,38 +51,24 @@
                 android:layout_marginTop="@dimen/_4sdp"
                 android:text="@{model.description}"
                 android:textColor="@color/fields_color"
-                app:layout_constraintEnd_toStartOf="@+id/rl_img_item"
+                app:layout_constraintEnd_toStartOf="@+id/img_item"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_title"
                 tools:text="@string/dummy_desc" />
 
-            <RelativeLayout
-                android:id="@+id/rl_img_item"
+            <!--android:src="@{model.imageHref}"-->
+            <ImageView
+                android:id="@+id/img_item"
                 android:layout_width="@dimen/_90sdp"
                 android:layout_height="@dimen/_60sdp"
                 android:layout_marginStart="@dimen/_8sdp"
                 android:layout_marginEnd="@dimen/_4sdp"
+                android:background="@color/bg_place_holder"
+                android:scaleType="fitXY"
                 app:layout_constraintEnd_toStartOf="@+id/img_right"
                 app:layout_constraintStart_toEndOf="@+id/txt_desc"
-                app:layout_constraintTop_toTopOf="@+id/txt_desc">
+                app:layout_constraintTop_toTopOf="@+id/txt_desc" />
 
-
-                <ImageView
-                    android:id="@+id/img_item"
-                    android:layout_width="match_parent"
-                    android:background="@color/bg_place_holder"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitXY" />
-
-                <ProgressBar
-                    android:id="@+id/progress_bar"
-                    style="?android:attr/progressBarStyleLarge"
-                    android:layout_width="@dimen/_16sdp"
-                    android:layout_height="@dimen/_16sdp"
-                    android:layout_centerInParent="true"
-                    android:indeterminateDrawable="@drawable/custom_progress_bar"
-                    android:visibility="gone" />
-            </RelativeLayout>
 
             <ImageView
                 android:id="@+id/img_right"

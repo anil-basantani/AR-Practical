@@ -8,8 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.andy_dev.arpractical.R
 import com.andy_dev.arpractical.databinding.ActivityMainBinding
+import com.andy_dev.arpractical.model.Facts
 import com.andy_dev.arpractical.remote.RetrofitFactory
 import com.andy_dev.arpractical.room.FactDatabase
 import com.andy_dev.arpractical.utils.LogUtil
@@ -23,7 +25,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val TAG = this::class.java.simpleName
     private lateinit var mActivity: Activity
+    private val STATE_ITEMS = "items"
+    private val STATE_POS = "position"
+    private var factItems: ArrayList<Facts> = ArrayList()
+    private var pos = 0
     private lateinit var factsViewModel: FactsViewModel
+    private var hasConfig: Boolean = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +39,22 @@ class MainActivity : AppCompatActivity() {
             this@MainActivity,
             R.layout.activity_main
         )
+        when {
+            savedInstanceState != null -> {
+                hasConfig = true
+                factItems = savedInstanceState.getSerializable(STATE_ITEMS) as ArrayList<Facts>
+                pos = savedInstanceState.getInt(STATE_POS, 0)
+            }
+        }
         init()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        val manager = binding.rvItemsList.layoutManager as LinearLayoutManager
+        outState.putSerializable(STATE_ITEMS, factItems)
+        outState.putInt(STATE_POS, manager.findFirstCompletelyVisibleItemPosition())
     }
 
     private fun init() {
@@ -53,7 +76,11 @@ class MainActivity : AppCompatActivity() {
         val factsRepo = FactsRepo(RetrofitFactory.makeRetrofitService(), database.factsDao())
         factsViewModel.setFactRepo(factsRepo)
 
-        factsViewModel.loadFacts(true)
+        if (hasConfig)
+            initFactItems()
+        else
+            factsViewModel.loadFacts(true)
+
 
         factsViewModel.factLoader().observe(this, Observer {
             binding.progressBar.visibility = when {
@@ -81,10 +108,19 @@ class MainActivity : AppCompatActivity() {
             LogUtil.LOGE(TAG, "factResults::$it")
 
             if (!it.isNullOrEmpty()) {
-                binding.rvItemsList.visibility = VISIBLE
-                binding.rvItemsList.adapter = FactsListAdapter(ArrayList(it))
+                factItems = ArrayList(it)
+                initFactItems()
             }
         })
+    }
+
+    private fun initFactItems() {
+        binding.rvItemsList.visibility = VISIBLE
+        binding.rvItemsList.adapter = FactsListAdapter(factItems)
+        when (pos > 0) {
+            true -> binding.rvItemsList.scrollToPosition(pos)
+        }
+
     }
 
     private fun hideSwipe() {
