@@ -77,6 +77,7 @@ class FactsViewModel : ViewModel() {
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .debounce(400, TimeUnit.MILLISECONDS)
+            .timeout(3000, TimeUnit.MILLISECONDS)
             .subscribe(disposableObserver)
     }
 

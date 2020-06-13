@@ -65,6 +65,7 @@
                 android:layout_marginEnd="@dimen/_4sdp"
                 android:background="@color/bg_place_holder"
                 android:scaleType="fitXY"
+                app:imageUrl="@{model.imageHref}"
                 app:layout_constraintEnd_toStartOf="@+id/img_right"
                 app:layout_constraintStart_toEndOf="@+id/txt_desc"
                 app:layout_constraintTop_toTopOf="@+id/txt_desc" />

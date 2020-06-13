@@ -20,8 +20,13 @@ data class Facts(
     @ColumnInfo(name = "description") @SerializedName("description") @Expose var description: String? = "",
     @ColumnInfo(name = "imageHref") @SerializedName("imageHref") @Expose var imageHref: String? = ""
 ) : Serializable {
-    @BindingAdapter("android:src")
-    fun loadImage(view: ImageView, imageUrl: String) {
-        Utility.loadImage(BaseApplication.getApplicationContext(), imageUrl ?: "", view)
+
+    companion object {
+        @JvmStatic
+        @BindingAdapter("imageUrl")
+        fun loadImage(view: ImageView, imageUrl: String?) {
+//            if (!imageUrl.isNullOrEmpty())
+            Utility.loadImage(BaseApplication.getApplicationContext(), imageUrl ?: "", view)
+        }
     }
 }
